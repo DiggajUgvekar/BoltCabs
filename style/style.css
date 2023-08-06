@@ -98,7 +98,7 @@ header .signup{
 .image-container {
     position: relative;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    background-image: url(./img/bg8.png);
+    background-image: url(../img/car.png);
     background-size: cover; 
     background-repeat: no-repeat;
     background-position: center center;

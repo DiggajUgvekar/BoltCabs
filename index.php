@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style/style.css">
     <title>BoltCabs</title>
 <body>
     <header>
@@ -20,7 +20,7 @@
         
         <div class="image-container" >
             <h1 class="slogan">Rent A Cab Now!</h1>
-            <a href="login.php" class="rentnow">Get Started</a>
+            <a href="signup.php" class="rentnow">Get Started</a>
         </div>
     </section>
 

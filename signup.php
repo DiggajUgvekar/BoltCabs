@@ -29,12 +29,12 @@
                 <div class="input-group">
                     <div class="input-field" id="namefield">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" placeholder="Name" >
+                        <input type="text" class="nameinput" placeholder="Name" >
                     </div>
 
                     <div class="input-field" id="phonefield">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" placeholder="Phone number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" >
+                        <input type="tel" class="phoneno" placeholder="Phone number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" >
                     </div>
 
                     <div class="input-field">
@@ -65,19 +65,12 @@ let signinbtn =document.getElementById("signinbtn")
 let namefield =document.getElementById("namefield")
 let title =document.getElementById("title")
 
-namefield.style.maxHeight ="0";
-    phonefield.style.maxHeight ="0";
-    title.innerHTML = "Log In";
-    signupbtn.classList.add("disable");
-    signinbtn.classList.remove("disable");
-
 signinbtn.onclick =function(){
     namefield.style.maxHeight ="0";
     phonefield.style.maxHeight ="0";
     title.innerHTML = "Log In";
     signupbtn.classList.add("disable");
-    signinbtn.classList.remove("disable");
-
+    signinbtn.classList.remove("disable");  
 }
 signupbtn.onclick =function(){
     namefield.style.maxHeight ="60px";
