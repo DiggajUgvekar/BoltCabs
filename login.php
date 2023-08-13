@@ -24,19 +24,9 @@
     
     <div class="container">
         <div class="formbox">
-            <h1 id="title">Sign up</h1>
+            <h1 id="title">Log In</h1>
             <form>
                 <div class="input-group">
-                    <div class="input-field" id="namefield">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" placeholder="Name" >
-                    </div>
-
-                    <div class="input-field" id="phonefield">
-                        <i class="fa-solid fa-phone"></i>
-                        <input type="tel" placeholder="Phone number" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" >
-                    </div>
-
                     <div class="input-field">
                         <i class="fa-solid fa-envelope"></i>
                         <input type="email" placeholder="Email" required>
@@ -50,8 +40,7 @@
                     <p>Forgot password <a href="#"><u> Click Here!</u></a></p>
                 </div>
                 <div class="btn-field">
-                    <button type="submit" id="signupbtn">Sign Up</button>                   
-                    <button type="submit" id="signinbtn" class="disable">Log In</button>
+                    <button type="submit" id="signinbtn">Log In</button>
 
                 </div>
                 
@@ -59,35 +48,8 @@
         </div>
     </div>
     <script>
-
-let signupbtn =document.getElementById("signupbtn")
-let signinbtn =document.getElementById("signinbtn")
-let namefield =document.getElementById("namefield")
-let title =document.getElementById("title")
-
-namefield.style.maxHeight ="0";
-    phonefield.style.maxHeight ="0";
-    title.innerHTML = "Log In";
-    signupbtn.classList.add("disable");
-    signinbtn.classList.remove("disable");
-
-signinbtn.onclick =function(){
-    namefield.style.maxHeight ="0";
-    phonefield.style.maxHeight ="0";
-    title.innerHTML = "Log In";
-    signupbtn.classList.add("disable");
-    signinbtn.classList.remove("disable");
-
-}
-signupbtn.onclick =function(){
-    namefield.style.maxHeight ="60px";
-    phonefield.style.maxHeight ="60px";
-    title.innerHTML = "Sign Up";
-    signupbtn.classList.remove("disable");
-    signinbtn.classList.add("disable");
-
-}
-
 </script>
 </body>
 </html>
+
+

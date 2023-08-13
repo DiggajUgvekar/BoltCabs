@@ -110,6 +110,7 @@ header .signup{
     background: #fff;
     padding: 50px 60px 70px;
     text-align: center;
+ 
 }
 
 .formbox h1{
@@ -164,12 +165,14 @@ form p a{
 
 .btn-field{
     width: 100%;
-    display: flex;
-    margin-top: 15px;
+    /* display: flex; */
+    margin-top: 20px;
     justify-content: space-between;
+    
+
 }
 .btn-field button{
-    flex-basis: 48%;
+    /* flex-basis: 48%; */
     background: black;
     color: #fff;
     height: 40px;
@@ -178,12 +181,8 @@ form p a{
     outline: 0;
     cursor: pointer;
     transition: black 1s;
-}
+    padding: 10px 50px;
+} 
 .input-group{
     height: 280px;
-}
-.btn-field button.disable{
-    background: #eaeaea;
-    color: #555;
-
 }
