@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
+    <title>Signup page</title>
     <link rel="stylesheet" href="./style/login.css">
     <script src="https://kit.fontawesome.com/df94d1352d.js" crossorigin="anonymous"></script>
 </head>
@@ -43,10 +43,9 @@
 
                     <div class="input-field">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" placeholder="Password" required name="password">
+                        <input type="password" placeholder="Password" required name="password" minlength="8">
                     </div>
 
-                    <p>Forgot password <a href="#"><u> Click Here!</u></a></p>
                 </div>
                 <div class="btn-field">
                     <button type="submit" id="signupbtn">Sign Up</button>                   

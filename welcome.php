@@ -1,3 +1,6 @@
+
+
+
 <?php
 $servername = "localhost";
 $username = "root";
@@ -37,14 +40,31 @@ if ($result) {
                 $stmt = $conn->prepare("INSERT INTO registration(user_name, user_phone, user_email, user_password) VALUES (?, ?, ?, ?)");
                  $stmt->bind_param("ssss", $name, $phoneno, $email, $hashedPassword);
                  $stmt->execute();
+                 echo "<script>
+                alert('OTP verified sucessfully!');
+              window.location.href = 'book.php';
+            </script>";
+            exit();
             } else {
-                alert("OTP has expired. Please request a new OTP.");
+            echo "<script>
+                alert('OTP has expired. Please request a new OTP.');
+              window.location.href = 'signup.php';
+            </script>";
+            exit();
             }
         } else {
-            alert("User not found or OTP record not found.");
+            echo "<script>
+            alert('User not found or OTP record not found.');
+          window.location.href = 'signup.php';
+        </script>";
+        exit();
         }
     } else {
-        alert( "User not found.");
+        echo "<script>
+        alert('User not found.');
+      window.location.href = 'signup.php';
+    </script>";
+    exit();
     }
 }
 }

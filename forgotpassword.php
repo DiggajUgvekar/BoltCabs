@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login page</title>
     <link rel="stylesheet" href="./style/login.css">
-    <script src="https://kit.fontawesome.com/df94d1352d.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -21,34 +20,23 @@
         <li><a href="signup.php" class="signup">Sign Up</a></li>
         </ul>
     </header>
-    
     <div class="container">
         <div class="formbox">
-            <h1 id="title">Log In</h1>
-            <form action="verifylogin.php" method="post">
+            <h1 id="title">Verify</h1>
+            <form action="forgotverify.php" method="post">
                 <div class="input-group">
                     <div class="input-field">
-                        <i class="fa-solid fa-envelope"></i>
-                        <input type="email" placeholder="Email" required name="email">
+                        <input type="text" placeholder="OTP" required name="otpnumber">
                     </div>
-
-                    <div class="input-field">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" placeholder="Password" required  name="password">
-                    </div>
-
-                    <p>Forgot password <a href="forgotpassword.php"><u> Click Here!</u></a></p>
                 </div>
                 <div class="btn-field">
-                    <button type="submit" id="signinbtn">Log In</button>
+                    <button type="submit" id="signinbtn">Verify</button>
 
                 </div>
                 
             </form>
         </div>
-    </div>
-    <script>
-</script>
+
+</div>
 </body>
 </html>
-

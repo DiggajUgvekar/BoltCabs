@@ -114,19 +114,6 @@ $mail->Subject = "Hey ".$name.", BoltCabs OTP(One Time Password)";
 $mail->Body = "<p style='font-size: 24px;'>Your OTP: <strong>".$otp."</strong></p>";
 $mail->send();
 
-
-// $stmt = $conn->prepare("INSERT INTO registration(user_name, user_phone, user_email, user_password) VALUES (?, ?, ?, ?)");
-// $stmt->bind_param("ssss", $name, $phoneno, $email, $hashedPassword);
-
-// if ($stmt->execute()) {
-//     echo "<script>
-//             alert('Sign Up successful!');
-//              window.location.href = 'verify.php';
-//           </script>";
-//     exit();
-// }
-
-// $stmt->close();
 $conn->close();
 ?>
 
