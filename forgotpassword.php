@@ -22,15 +22,15 @@
     </header>
     <div class="container">
         <div class="formbox">
-            <h1 id="title">Verify</h1>
+            <h1 id="title">Forgot Passowrd</h1>
             <form action="forgotverify.php" method="post">
                 <div class="input-group">
                     <div class="input-field">
-                        <input type="text" placeholder="OTP" required name="otpnumber">
+                        <input type="text" placeholder="Email" required name="email">
                     </div>
                 </div>
                 <div class="btn-field">
-                    <button type="submit" id="signinbtn">Verify</button>
+                    <button type="submit" id="signinbtn">Reset Password</button>
 
                 </div>
                 

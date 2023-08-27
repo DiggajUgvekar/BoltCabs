@@ -87,9 +87,21 @@ date_default_timezone_set('Asia/Kolkata');
 $expiryTimestamp = time() + 300; // Current timestamp + 300 seconds (5 minutes)
 $expiryTimeFormatted = date('Y-m-d H:i:s', $expiryTimestamp);
 
+
+$otpCheckQuery = "SELECT user_id FROM otp WHERE user_id = ?";
+$otpCheck = $conn->prepare($otpCheckQuery);
+$otpCheck->bind_param("s", $email);
+$otpCheck->execute();
+$otpCheck->store_result();
+
+if ($otpCheck->num_rows > 0) {
+    $sql = "UPDATE otp SET otpnum = $otp, expiry = '$expiryTimeFormatted' WHERE user_id = '$email'";
+    $conn->query($sql);
+}
+else{
 $sql = "INSERT INTO otp (user_id, otpnum, expiry) VALUES ('$email', $otp, '$expiryTimeFormatted')";
 $conn->query($sql);
-
+}
 //sending otp to email
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
