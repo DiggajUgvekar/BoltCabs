@@ -1,16 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "boltcabs";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include 'connection.php';
+session_start();
 $email = $_POST["email"];
 $password = $_POST["password"];
 
@@ -23,6 +13,7 @@ if ($result) {
     if ($row) {
         $storedpassword = $row['user_password'];
         if (password_verify($password, $storedpassword)) {
+            $_SESSION["email"] = $email;
             echo "<script>
                 alert('Login Successfully!!');
               window.location.href = 'book.php';

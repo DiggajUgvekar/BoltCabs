@@ -1,15 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "boltcabs";
+include 'connection.php';
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 $password = $_POST['confirm_password'];
 $email = $_POST['email'];
 $token = $_POST['token'];

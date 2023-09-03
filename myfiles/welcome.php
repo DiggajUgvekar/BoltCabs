@@ -2,17 +2,7 @@
 
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "boltcabs";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'connection.php';
 
 if(isset($_POST["otpnumber"])){
    // Retrieve stored OTP and expiration from the database

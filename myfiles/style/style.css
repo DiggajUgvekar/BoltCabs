@@ -93,7 +93,18 @@ header .signup{
     text-decoration: none;
     border-radius: 30px;
 }
-
+header .logout{
+    color: white;
+    background-color: rgb(62, 62, 62);
+    padding: 15px;
+    position: relative;
+    letter-spacing: 1px;
+    font-weight: 700;
+    font-size: 15px;
+    transition: 0.6s;
+    text-decoration: none;
+    border-radius: 30px;
+}
 
 .image-container {
     position: relative;

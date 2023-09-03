@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" href="./style/login.css">
@@ -12,7 +15,15 @@
         </ul>
        <ul>
         <!-- <li><a href="login.php" class="login">Log In</a></li> -->
-        <li><a href="index.php" class="logout">LOGOUT</a></li>
+        <?php
+        if(isset($_SESSION['email'])){
+           echo '<li><a href="logout.php" class="logout">LOGOUT</a></li>';
+        }
+        else{
+        echo '<li><a href="login.php" class="login">Log In</a></li>';
+        echo '<li><a href="signup.php" class="signup">Sign Up</a></li>';
+        }
+        ?>
         </ul> 
     </header>
 

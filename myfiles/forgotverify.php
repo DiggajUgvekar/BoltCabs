@@ -1,20 +1,8 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "boltcabs";
-
+include 'connection.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 $email = $_POST["email"];
 
 $emailCheckQuery = "SELECT user_email FROM registration WHERE user_email = ?";
@@ -39,19 +27,19 @@ $mail = new PHPMailer(true);
 $mail->isSMTP();
 $mail->Host='smtp.gmail.com';
 $mail->SMTPAuth = true;
-$mail->Username = 'contactdiggaj@gmail.com';
-$mail->Password = 'bwdacyufzwwoleek';
+$mail->Username = 'boltcabs86@gmail.com';
+$mail->Password = 'zxcumcthpzghpfdr';
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 
-$mail->setFrom('contactdiggaj@gmail.com');
+$mail->setFrom('boltcabs86@gmail.com');
 $mail->addAddress($email);
 $mail->isHTML(true);
 $mail->Subject = "Reset Password! Boltcabs";
 
 $email_template = "<h3>Click the Link below to Reset Your Password</h3>
                  <br>
-                 <a href='http://localhost/mycode/BoltCabs/passwordchange.php?token=$token&email=$email'>ResetPassword</a>";
+                 <a href='http://localhost/mycode/BoltCabs/myfiles/passwordchange.php?token=$token&email=$email'>ResetPassword</a>";
 $mail->Body = $email_template;
 $mail->send();
 echo "<script>

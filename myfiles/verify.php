@@ -38,17 +38,7 @@
 </html>
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "boltcabs";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'connection.php';
 
 $name = $_POST["name"];
 $phoneno = '91'.$_POST["phoneno"];
@@ -114,12 +104,12 @@ $mail = new PHPMailer(true);
 $mail->isSMTP();
 $mail->Host='smtp.gmail.com';
 $mail->SMTPAuth = true;
-$mail->Username = 'contactdiggaj@gmail.com';
-$mail->Password = 'bwdacyufzwwoleek';
+$mail->Username = 'boltcabs86@gmail.com';
+$mail->Password = 'zxcumcthpzghpfdr';
 $mail->SMTPSecure = 'ssl';
 $mail->Port = 465;
 
-$mail->setFrom('contactdiggaj@gmail.com');
+$mail->setFrom('boltcabs86@gmail.com');
 $mail->addAddress($email);
 $mail->isHTML(true);
 $mail->Subject = "Hey ".$name.", BoltCabs OTP(One Time Password)";

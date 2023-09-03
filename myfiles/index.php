@@ -11,8 +11,16 @@
             <li><a href="contact.php">Contact</a></li>
         </ul>
         <ul>
-        <li><a href="login.php" class="login">Log In</a></li>
-        <li><a href="signup.php" class="signup">Sign Up</a></li>
+        <?php
+        session_start();
+        if(isset($_SESSION['email'])){
+           echo '<li><a href="logout.php" class="logout">LOGOUT</a></li>';
+        }
+        else{
+        echo '<li><a href="login.php" class="login">Log In</a></li>';
+        echo '<li><a href="signup.php" class="signup">Sign Up</a></li>';
+        }
+        ?>
         </ul>
     </header>
     
@@ -23,10 +31,6 @@
             <a href="signup.php" class="rentnow">Get Started</a>
         </div>
     </section>
-
-<?php
-// echo "My first PHP script!";
-?>
 
 </body>
 </html>
