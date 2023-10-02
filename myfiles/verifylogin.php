@@ -16,7 +16,7 @@ if ($result) {
             $_SESSION["email"] = $email;
             echo "<script>
                 alert('Login Successfully!!');
-              window.location.href = 'book.php';
+              window.location.href = 'enterlocation.php';
             </script>";
             exit();
         } else {

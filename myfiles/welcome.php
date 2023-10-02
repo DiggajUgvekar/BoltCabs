@@ -32,7 +32,7 @@ if ($result) {
                  $stmt->execute();
                  echo "<script>
                 alert('OTP verified sucessfully!');
-              window.location.href = 'book.php';
+              window.location.href = 'enterlocation.php';
             </script>";
             exit();
             } else {
