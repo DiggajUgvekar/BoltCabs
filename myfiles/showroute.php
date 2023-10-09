@@ -1,4 +1,4 @@
-  <?php
+<?php
   include 'connection.php';
   session_start();
   ?>
@@ -6,7 +6,7 @@
   <html>
 
   <head>
-    <title>Geolocation</title>
+    <title>Show Route</title>
       <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style/login.css">
@@ -23,9 +23,10 @@
           #map{
               width:80%;
               height: 400px;
-              margin: 50px auto;
+              margin: 30px auto;
               box-shadow: 0px 0px 1000px black;
               border:20px;
+              z-index: 10;
           }
       .btn-field i{
         width: 100px
@@ -34,25 +35,23 @@
         background-image:url();
       }
       .maincontainer{
-        height: 200vb;
         background-image:url(img/route2.jpg);
         background-size: cover;
       }
       div.details{
-        /* position: relative; */
-      /* margin: 0 25px; */
       text-decoration: none;
       color: black;
       letter-spacing: 1px;
       font-weight: 500;
       font-size: 18px;
       background-color:white;
-      margin:10px 120px 10px 120px;
+      margin:5px 120px 5px 120px;
       padding:20px;
       box-shadow: 0 15px 15px rgba(0, 0, 0, 0.05);
 
               display: flex;
               align-items: center;
+              z-index: 100;
 
       }
       .details .distancetime{
@@ -85,7 +84,6 @@
           </ul>
           <ul>
           <?php
-          session_start();
           if(isset($_SESSION['email'])){
             echo '<li><a href="logout.php" class="logout">LOGOUT</a></li>';
           }
@@ -97,35 +95,8 @@
           </ul>
       </header>
   <div class="maincontainer">
+    <br><br>  
       <div class="container">
-          <div class="formbox">
-              <h1 id="title">Select You Route</h1>
-              <form id="myForm" >
-                <div class="input-group">
-                      <div class="input-field">
-                      <label for="from" class="content-label" ><i class="fa-regular fa-circle-dot"></i></label>
-                    <input type="text" id="from"placeholder="Pick Up Location" class="origin" required>
-                </div>
-
-                    <div class="input-field">
-                    <i class="fa-regular fa-calendar"></i>
-                              <input type="datetime-local" id="arrivaltime" name="arrivaltime" required><br>
-                    </div>
-                    <div class="input-field">
-                              <label for="to" class="content-label" ><i class="fa-solid fa-location-dot"></i></label>
-                              <input type="text" id="to" placeholder="Destination Location" class="destination" required><br>
-
-                                        </div>
-                    </div>
-                                    <div class="btn-field">
-                                        <button type="submit" id="direction"><i class="fa-solid fa-diamond-turn-right"></i></button>
-
-                                    </div>
-                                    
-              </form>
-            </div>
-            
-          </div>
           <div id="map"></div>
           <div class="details">
             <div class="distancetime">
@@ -158,12 +129,9 @@
                           alert("Please fill in all the required fields with valid values.");
                       }
                   else{
-                    // <?php
-                    // $email = $_SESSION["email"];
-                    // INSERT INTO bookings(user_email, pickup_location, dropoff_location, booking_status, pickup_datetime, created_at)
-                    // VALUES ( $email, 'PickupLocationValue', 'DropoffLocationValue', 'BookingStatusValue', '2023-10-09 14:30:00', NOW());
-
-                    // ?>
+                   <?php
+               
+                     ?>
                     alert('Route Confirmed');
                     window.location.href = 'index.php';
                     
@@ -258,11 +226,6 @@
             top: window.scrollY + 600, 
             behavior: 'smooth' 
           });
-          // e.routes[0].coordinates.forEach(function (coord, index) {
-          // 	setTimeout(function () {
-          // 		marker.setLatLng([coord.lat, coord.lng]);
-          // 	}, 100 * index)
-          // })
 
         }).addTo(map);
       } catch (error) {

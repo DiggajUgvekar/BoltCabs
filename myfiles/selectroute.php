@@ -1,0 +1,112 @@
+<?php
+  include 'connection.php';
+  session_start();
+  ?>
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <title>Select Route</title>
+      <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/login.css">
+    <script src="https://kit.fontawesome.com/df94d1352d.js" crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .container{
+        background-image:url();
+      }
+      .maincontainer{ 
+        background-image:url(img/route2.jpg);
+        background-size: cover;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+  <header>
+  <a href="index.php" class = "logo">BoltCabs</a>
+          <ul class="nav-page">
+              <li><a href="index.php">Home</a></li>
+              <li><a href="about.php">About</a></li>
+              <li><a href="contact.php">Contact</a></li>
+          </ul>
+          <ul>
+          <?php
+          
+            // session_start();
+          if(isset($_SESSION['email'])){
+            echo '<li><a href="logout.php" class="logout">LOGOUT</a></li>';
+          }
+          else{
+          echo '<li><a href="login.php" class="login">Log In</a></li>';
+          echo '<li><a href="signup.php" class="signup">Sign Up</a></li>';
+          }
+          ?>
+          </ul>
+      </header>
+      <div class="maincontainer">
+    <br><br>
+      <div class="container">
+          <div class="formbox">
+              <h1 id="title">Select You Route</h1>
+              <form action="selectroute.php" method="post">
+                <div class="input-group">
+                      <div class="input-field">
+                      <label for="from" class="content-label" ><i class="fa-regular fa-circle-dot"></i></label>
+                    <input type="text" name="from"id="from"placeholder="Pick Up Location" class="origin" required>
+                        </div>
+
+                    <div class="input-field">
+                    <i class="fa-regular fa-calendar"></i>
+                    <input type="datetime-local" id="arrivaltime" name="arrivaltime" required><br>
+                    </div>
+                    <div class="input-field">
+                              <label for="to" class="content-label" ><i class="fa-solid fa-location-dot"></i></label>
+                              <input type="text" id="to" name="to"placeholder="Destination Location" class="destination" required><br>
+
+                    </div>
+                    <div class="btn-field">
+                        <button type="submit" id="route ">Confirm Route</button>
+                        
+                    </div>
+                </div>
+                                    
+              </form>
+            </div>
+        
+        </div>
+
+    </div>
+        
+
+  </body>
+  </html>
+
+  <?php
+  include 'connection.php';
+
+  if(isset($_POST["from"]) && isset($_POST["to"])&& isset($_POST["arrivaltime"])){
+
+    $email = $_SESSION["email"];
+        $from = $_POST["from"];
+    $to = $_POST["to"];
+    $arrivaltime = $_POST["arrivaltime"];
+    $arrivalTimestamp = date("Y-m-d H:i:s", strtotime($arrivaltime));
+    date_default_timezone_set("Asia/Kolkata");
+    $currentTimestamp = date("Y-m-d H:i:s"); 
+    
+    $sql = "INSERT INTO bookings (user_email, pickup_location, dropoff_location, booking_status, pickup_datetime, created_at) VALUES ('$email', '$from', '$to', 'Pending', '$arrivalTimestamp', '$currentTimestamp')";
+    $conn->query($sql);
+    header("Location:showroute.php");
+  }
+  ?>
