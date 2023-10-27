@@ -16,7 +16,7 @@ if ($result) {
             $_SESSION["email"] = $email;
             echo "<script>
                 alert('Login Successfully!!');
-              window.location.href = 'selectroute.php';
+              window.location.href = 'dashboard.php';
             </script>";
             exit();
         } else {

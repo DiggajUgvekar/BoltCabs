@@ -1,6 +1,25 @@
 <?php
   include 'connection.php';
   session_start();
+  $bookingid = $_SESSION["bookingid"];
+  $sql = "SELECT pickup_location, dropoff_location FROM bookings WHERE booking_id = $bookingid";
+$result = $conn->query($sql);
+
+// Check if the query was successful
+if ($result) {
+    // Fetch the result as an associative array
+    $row = $result->fetch_assoc();
+
+    // Create a JavaScript object containing the data
+    echo "<script>";
+    echo "var bookingData = " . json_encode($row) . ";";
+    echo "</script>";
+
+    // Now you have the data in the JavaScript variable 'bookingData'
+} else {
+    // Handle the case where the query failed
+    echo "Error: " . $conn->error;
+}
   ?>
   <!DOCTYPE html>
   <html>
@@ -109,6 +128,12 @@
 
           <script>
              function confirmdetails(){
+              alert('Route Confirmed');
+              window.location.href = 'booktaxi.php';
+             }
+              </script>
+          <!-- <script>
+             function confirmdetails(){
               var arrivalTimeInput = document.getElementById("arrivaltime");
               var fromInput = document.getElementById("from");
               var toInput = document.getElementById("to");
@@ -142,69 +167,75 @@
               }
             
             }
-          </script>
+          </script> -->
           </div>
         </div>
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
     
     <script>
+      function geocodeLocation(locationText) {
+        var apiKey = 'c8d95b3fea6b42d881f5bf0d633892b3';
+        var apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(locationText)}&key=${apiKey}`;
+    
+        return axios.get(apiUrl)
+          .then(function (response) {
+            if (response.status === 200) {
+              var results = response.data.results;
+              if (results.length > 0) {
+                return {
+                  lat: results[0].geometry.lat,
+                  lng: results[0].geometry.lng
+                };
+              } else {
+                throw new Error("No results found for the location.");
+              }
+            } else {
+              throw new Error("Error occurred while geocoding.");
+            }
+          })
+          .catch(function (error) {
+            throw error;
+          });
+        }
+
+     
       var map = L.map('map').setView([15.286691, 73.969780], 10);
       mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>";
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: 'Leaflet &copy; ' + mapLink + ', contribution', maxZoom: 18 }).addTo(map);
       
       var lat1, lat2, lng1, lng2;
       
-  function geocodeLocation(locationText) {
-    var apiKey = 'c8d95b3fea6b42d881f5bf0d633892b3';
-    var apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(locationText)}&key=${apiKey}`;
-
-    return axios.get(apiUrl)
-      .then(function (response) {
-        if (response.status === 200) {
-          var results = response.data.results;
-          if (results.length > 0) {
-            return {
-              lat: results[0].geometry.lat,
-              lng: results[0].geometry.lng
-            };
-          } else {
-            throw new Error("No results found for the location.");
-          }
-        } else {
-          throw new Error("Error occurred while geocoding.");
-        }
-      })
-      .catch(function (error) {
-        throw error;
-      });
-    }
     
-    document.addEventListener("DOMContentLoaded", function() {
-    var form = document.getElementById("myForm");
-
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault(); // Prevent the default form submission behavior
-
-      var origin = document.getElementById("from").value;
-      var destination = document.getElementById("to").value;
-
+      async function getCoordinates() {
+      var origin = bookingData.pickup_location;
+      var destination = bookingData.dropoff_location;
+      
       try {
         var originCoordinates = await geocodeLocation(origin);
         var destinationCoordinates = await geocodeLocation(destination);
+        processCoordinates(originCoordinates, destinationCoordinates);
+        // console.log(originCoordinates.lat);
+        // console.log(destinationCoordinates.lat);
+      } catch (error) {
+        console.error("An error occurred while geocoding:", error);
+      }
+    }
 
-        lat1 = originCoordinates.lat;
-        lng1 = originCoordinates.lng;
-        lat2 = destinationCoordinates.lat;
-        lng2 = destinationCoordinates.lng;
 
-        var marker = L.marker([lat1, lng1]).addTo(map);
+function processCoordinates(originCoordinates, destinationCoordinates) {
+  // Do something with the coordinates here
+  lat1 = originCoordinates.lat;
+  lng1 = originCoordinates.lng;
+  lat2 = destinationCoordinates.lat;
+  lng2 = destinationCoordinates.lng;
+  
+  var marker = L.marker([lat1, lng1]).addTo(map);
+  var newMarker = L.marker([lat2, lng2]).addTo(map);
 
-        var newMarker = L.marker([lat2, lng2]).addTo(map);
-        
-        L.Routing.control({
+  L.Routing.control({
           waypoints: [
             L.latLng(lat1, lng1),
             L.latLng(lat2, lng2)
@@ -222,19 +253,24 @@
           document.getElementById("distanceValue").textContent = distanceInKilometers;
           document.getElementById("travelTimeValue").textContent = travelTimeInMinutes;
           map.setZoom(9);
-          window.scroll({
-            top: window.scrollY + 600, 
-            behavior: 'smooth' 
-          });
-
         }).addTo(map);
-      } catch (error) {
-        console.error("Error: " + error.message);
-      }
-    });
-  });
+}
 
- 
+getCoordinates();
+
+          // window.scroll({
+          //   top: window.scrollY + 600, 
+          //   behavior: 'smooth' 
+          // });
+
+        // 
+      // } catch (error) {
+      //   console.error("Error: " + error.message);
+      // }
+  //   });
+  // });
+
+
     </script>
   </body>
   </html>
