@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" href="./style/style.css">
-    <title>BoltCabs</title>
+    <title>DashBoard - BoltCabs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         
   body {
@@ -10,7 +11,7 @@
   }
 
   .book-more-button {
-  background-color: white; /* Attractive background color */
+  background-color: white; 
   color: black;
   text-decoration: none;
   padding: 25px 40px;
@@ -19,17 +20,17 @@
   font-weight: bold;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
-  text-transform: uppercase; /* Uppercase text */
-  letter-spacing: 2px; /* Increase letter spacing */
-  font-size: 18px; /* Larger font size */
-  cursor: pointer; /* Change cursor on hover */
-  display: inline-block; /* Ensure it takes up the full width available */
-  margin: 10px; /* Add spacing around the button */
+  text-transform: uppercase; 
+  letter-spacing: 2px; 
+  font-size: 18px;
+  cursor: pointer; 
+  display: inline-block; 
+  margin: 10px; 
 }
 
 .book-more-button:hover {
-  background-color: white; /* Change color on hover */
-  transform: scale(1.05); /* Slight scale increase on hover */
+  background-color: white; 
+  transform: scale(1.05); 
 }
 
 
@@ -48,8 +49,8 @@
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 
-  max-height: 200px; /* Adjust as needed */
-  overflow: auto; /* Add scrollbars if content exceeds the height */
+  max-height: 200px; 
+  overflow: auto; 
 
 
   }
@@ -103,88 +104,10 @@
 
   .button-container-booknow {
   display: grid;
-  place-items: center; /* Center both horizontally and vertically */
-  height: 40vh; /* Center within the viewport height */
+  place-items: center; 
+  height: 40vh; 
   background-image:url(img/bg4.png);
 }
-
-        /* .booking-details {
-    display: flex;
-    align-items: center;
-    margin: 20px;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-.no-bookings-message {
-    text-align: center; 
-    color: #777; 
-    font-size: 16px; 
-    font-style: italic; 
-    margin: 10px 0; 
-}
-
-
-.car-image {
-    max-width: 150px;
-    margin-right: 20px;
-}
-
-.details {
-    font-size: 16px;
-    color: #333;
-}
-.book-more-button {
-    width: 400px;
-    font-size:40px;
-    background-image: url(img/bg8.png);
-    color: #fff;
-    text-decoration: none;
-    padding: 70px 100px;
-    border-radius: 50px;
-    display: block;
-    margin: 10px auto; 
-    text-align: center;
-}
-
-.book-more-button:hover {
-    background-color:grey;
-}
-
-.button-container {
-    text-align: center;
-}
-
-.view-button, .cancel-button {
-    display: inline-block;
-
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 50px;
-    border-radius: 5px;
-    margin: 10px;
-    text-align: center;
-}
-.view-button{
-    background-color: #007bff;
-}
-.cancel-button {
-    background:#ff0000;
-}
-.view-button:hover{
-    background-color: #0056b3;
-}
-.cancel-button:hover{
-    background:#AE2002  ;
-}
-
-.bookings-heading {
-    font-size: 28px; 
-    color: #333; 
-    text-align: center;
-    margin-top: 20px; 
-    text-transform: uppercase; 
-} */
-
     </style>
 <body>
 <header>
@@ -230,8 +153,6 @@ if (isset($_SESSION['email'])) {
     if ($bookingResult->num_rows > 0) {
         while ($bookingRow = $bookingResult->fetch_assoc()) {
             $car_id = $bookingRow['car_id'];
-
-            // Retrieve the car details
             $carSQL = "SELECT * FROM taxis WHERE taxi_id = ?";
             $stmt = $conn->prepare($carSQL);
             $stmt->bind_param("i", $car_id);
@@ -239,7 +160,6 @@ if (isset($_SESSION['email'])) {
             $carResult = $stmt->get_result();
             $carRow = $carResult->fetch_assoc();
 
-            // Display booking and car details
             echo '<div class="booking-details">';
             echo '<img src="' . $carRow['taxi_image'] . '" alt="Car Image" class="car-image">';
             echo '<div class="details">';
@@ -248,10 +168,9 @@ if (isset($_SESSION['email'])) {
             echo '<p><strong>Car Registration Number:</strong> ' . $carRow['taxi_regno'] . '</p>';
             echo '<p><strong>Pickup Location:</strong> ' . $bookingRow['pickup_location'] . '</p>';
             echo '<p><strong>Arrival Date and Time  :</strong> ' . $bookingRow['pickup_datetime'] . '</p>';
-            // Add more booking and car details as needed
             echo '<div class="button-container">
             <a href="viewbooking.php?booking_id='.$bookingRow["booking_id"] .'" class="view-button">View Booking</a>
-            <a href="#" class="cancel-button">Cancel Booking</a>
+            <a href="cancelbooking.php?booking_id='.$bookingRow["booking_id"] .'" class="cancel-button">Cancel Booking</a>
         </div>
         ';
             echo '</div>';
@@ -267,6 +186,23 @@ if (isset($_SESSION['email'])) {
 
 
 ?>
-
+  <footer>
+    <div class="footer-content">
+       
+        <div class="social-icons">
+            <a href="#" ><i class="fab fa-facebook"></i></a>
+            <a href="#" ><i class="fab fa-instagram"></i></a>
+            <a href="#" ><i class="fab fa-linkedin"></i></a>
+            <a href="#" ><i class="fab fa-twitter"></i></a>
+        </div>
+        <div class="footer-links">
+            <a href="#"><i class="fas fa-file-alt"></i> Terms of Service</a>
+            <a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+            <a href="contact.php"><i class="fas fa-envelope"></i> Contact Us</a>
+            <a href="#"><i class="fas fa-question-circle"></i> FAQ</a>
+            <a href="#"><i class="fas fa-phone-alt"></i> Customer Support</a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

@@ -55,25 +55,6 @@ header ul li a {
     transition: 0.6s;
 }
 
-
-/* header ul.nav-page li a::before{
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    width: 100%;
-    height: 2px;
-    background-color: black;
-    transform: scaleX(0);
-    transition: transform 0.5s ease-in-out;
-    transform-origin: right;
-} */
-
-
-/* header ul.nav-page li a:hover::before{
-    transform: scaleX(1);
-    transform-origin: left;
-} */
-
 header .login {
     color: black;
     position: relative;
@@ -185,13 +166,11 @@ form p a {
 
 .btn-field {
     width: 100%;
-    /* display: flex; */
     margin-top: 20px;
     justify-content: space-between;
 }
 
 .btn-field button {
-    /* flex-basis: 48%; */
     background: black;
     color: #fff;
     height: 40px;

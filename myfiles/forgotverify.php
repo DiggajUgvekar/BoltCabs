@@ -12,13 +12,10 @@ $stmtCheck->execute();
 $stmtCheck->store_result();
 
 if ($stmtCheck->num_rows > 0) {
-    //email exist
     $token = md5(rand());
-    
     $sql = "UPDATE otp SET token = '$token' WHERE user_id = '$email'";
     $conn->query($sql);
-    
-
+  
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
@@ -39,7 +36,7 @@ $mail->Subject = "Reset Password! Boltcabs";
 
 $email_template = "<h3>Click the Link below to Reset Your Password</h3>
                  <br>
-                 <a href='http://localhost/mycode/BoltCabs/myfiles/passwordchange.php?token=$token&email=$email'>ResetPassword</a>";
+                 <a href='http://localhost/BoltCabs/myfiles/passwordchange.php?token=$token&email=$email'>ResetPassword</a>";
 $mail->Body = $email_template;
 $mail->send();
 echo "<script>

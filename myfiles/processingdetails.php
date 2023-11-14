@@ -1,33 +1,27 @@
 <?php
-include "connection.php"; // Include your database connection script
+include "connection.php"; 
 session_start();
 if (isset($_SESSION['bookingid']) && isset($_SESSION['taxi_id'])) {
     $booking_id = $_SESSION['bookingid'];
     $car_id = $_SESSION['taxi_id'];
-
-    // Update the booking status to "Confirmed"
+    $cost = $_GET['cost'];
     $bookingStatus = "Confirmed";
     $updateBookingStatusSQL = "UPDATE bookings SET booking_status = ? WHERE booking_id = ?";
     $stmt = $conn->prepare($updateBookingStatusSQL);
     $stmt->bind_param("si", $bookingStatus, $booking_id);
     
-    // Update the car_id to associate the booking with the selected car
     $updateCarIdSQL = "UPDATE bookings SET car_id = ? WHERE booking_id = ?";
     $stmt2 = $conn->prepare($updateCarIdSQL);
     $stmt2->bind_param("ii", $car_id, $booking_id);
     
-    $updateTaxiStatusSQL = "UPDATE taxis SET taxi_status = 'Booked' WHERE taxi_id = ?";
-    $stmt3 = $conn->prepare($updateTaxiStatusSQL);
-    $stmt3->bind_param("i", $car_id);
 
-    // Execute the update queries
+    $sql3 = "UPDATE bookings SET cost = $cost WHERE booking_id = '$booking_id'";
+    $conn->query($sql3);
+
     $stmt->execute();
     $stmt2->execute();
-    $stmt3->execute();
-    
     $stmt->close();
     $stmt2->close();
-    $stmt3->close();
     
     
     echo "<script>
@@ -46,9 +40,6 @@ if (isset($_SESSION['bookingid']) && isset($_SESSION['taxi_id'])) {
     }, 5000);
 </script>
 ";
-
-    // Redirect to another page after confirmation
-    // echo '<script>window.location.href = "confirmation-page.php";</script>';
 } else {
     echo 'Booking ID or Car ID not provided.';
 }
@@ -95,9 +86,9 @@ if (isset($_SESSION['bookingid']) && isset($_SESSION['taxi_id'])) {
     font-size: 16px;
 }
 .checkmark {
-    display: none; /* Initially hidden */
-    font-size: 40px; /* Adjust the font size as needed */
-    color: #00cc00; /* Green color for the checkmark */
+    display: none; 
+    font-size: 40px; 
+    color: #00cc00; 
 }
 
 @keyframes spin {
@@ -116,7 +107,6 @@ if (isset($_SESSION['bookingid']) && isset($_SESSION['taxi_id'])) {
 </div>
 
         <div class="message">
-            <!-- Display a message to the user -->
             <p id="details">Processing your request...</p>
         </div>
     </div>

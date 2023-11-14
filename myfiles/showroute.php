@@ -5,19 +5,14 @@
   $sql = "SELECT pickup_location, dropoff_location FROM bookings WHERE booking_id = $bookingid";
 $result = $conn->query($sql);
 
-// Check if the query was successful
 if ($result) {
-    // Fetch the result as an associative array
     $row = $result->fetch_assoc();
 
-    // Create a JavaScript object containing the data
     echo "<script>";
     echo "var bookingData = " . json_encode($row) . ";";
     echo "</script>";
 
-    // Now you have the data in the JavaScript variable 'bookingData'
 } else {
-    // Handle the case where the query failed
     echo "Error: " . $conn->error;
 }
   ?>
@@ -132,42 +127,6 @@ if ($result) {
               window.location.href = 'booktaxi.php';
              }
               </script>
-          <!-- <script>
-             function confirmdetails(){
-              var arrivalTimeInput = document.getElementById("arrivaltime");
-              var fromInput = document.getElementById("from");
-              var toInput = document.getElementById("to");
-
-              function isValidDateTime(dateTimeString) {
-                  var dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-                  return dateTimeRegex.test(dateTimeString);
-              }
-
-              var arrivalTimeInput = document.getElementById("arrivaltime").value;
-
-              if (isValidDateTime(arrivalTimeInput)) {
-                  var fromValue = fromInput.value;
-                  var toValue = toInput.value;
-                  var arrivalTimeValue = arrivalTimeInput.value;
-
-                  if (!fromValue || !toValue ) {
-                          alert("Please fill in all the required fields with valid values.");
-                      }
-                  else{
-                   <?php
-               
-                     ?>
-                    alert('Route Confirmed');
-                    window.location.href = 'index.php';
-                    
-                  exit; 
-                  }
-              } else {
-                  alert("Datetime input is invalid: " );
-              }
-            
-            }
-          </script> -->
           </div>
         </div>
      <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
@@ -176,6 +135,30 @@ if ($result) {
     
     
     <script>
+      function updateExpirationTime(travelTimeInMinutes,distanceInKilometers) {
+    var bookingid = <?php echo $bookingid; ?>; 
+    var data = {
+      bookingid: bookingid,
+      travelTimeInMinutes: travelTimeInMinutes,
+      distanceInKilometers : distanceInKilometers
+    };
+
+    
+    axios.post('updateExpirationTime.php', data)
+      .then(function (response) {
+    
+        if (response.data.success) {
+          // alert('Route Confirmed');
+          // window.location.href = 'booktaxi.php';
+        } else {
+          alert('Error updating expiration time: ' + response.data.message);
+        }
+      })
+      .catch(function (error) {
+        alert('An error occurred: ' + error.message);
+      });
+  }
+
       function geocodeLocation(locationText) {
         var apiKey = 'c8d95b3fea6b42d881f5bf0d633892b3';
         var apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(locationText)}&key=${apiKey}`;
@@ -217,8 +200,7 @@ if ($result) {
         var originCoordinates = await geocodeLocation(origin);
         var destinationCoordinates = await geocodeLocation(destination);
         processCoordinates(originCoordinates, destinationCoordinates);
-        // console.log(originCoordinates.lat);
-        // console.log(destinationCoordinates.lat);
+        
       } catch (error) {
         console.error("An error occurred while geocoding:", error);
       }
@@ -226,8 +208,7 @@ if ($result) {
 
 
 function processCoordinates(originCoordinates, destinationCoordinates) {
-  // Do something with the coordinates here
-  lat1 = originCoordinates.lat;
+    lat1 = originCoordinates.lat;
   lng1 = originCoordinates.lng;
   lat2 = destinationCoordinates.lat;
   lng2 = destinationCoordinates.lng;
@@ -253,24 +234,14 @@ function processCoordinates(originCoordinates, destinationCoordinates) {
           document.getElementById("distanceValue").textContent = distanceInKilometers;
           document.getElementById("travelTimeValue").textContent = travelTimeInMinutes;
           map.setZoom(9);
+          updateExpirationTime(travelTimeInMinutes,distanceInKilometers);
         }).addTo(map);
 }
 
 getCoordinates();
 
-          // window.scroll({
-          //   top: window.scrollY + 600, 
-          //   behavior: 'smooth' 
-          // });
-
-        // 
-      // } catch (error) {
-      //   console.error("Error: " + error.message);
-      // }
-  //   });
-  // });
-
-
-    </script>
+    </script>    
   </body>
   </html>
+
+

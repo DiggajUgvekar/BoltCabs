@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" href="./style/login.css">
-    <title>BoltCabs</title>
+    <title>Verify OTP</title>
 <body>
 <header>
         <a href="index.php" class = "logo">BoltCabs</a>
@@ -24,6 +24,9 @@
                     <div class="input-field">
                         <input type="text" placeholder="OTP" required name="otpnumber">
                     </div>
+                    <div id="countdown">
+                        Time left: <span id="timer">5:00</span>
+                 </div>
                 </div>
                 <div class="btn-field">
                     <button type="submit" id="signinbtn">Verify</button>
@@ -34,6 +37,28 @@
         </div>
 
 </div>
+<script>
+var countdownTime = 300;
+var timer = document.getElementById('timer');
+
+function startCountdown() {
+    var timerInterval = setInterval(function() {
+        var minutes = Math.floor(countdownTime / 60);
+        var seconds = countdownTime % 60;
+
+        timer.textContent = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+
+        if (countdownTime <= 0) {
+            clearInterval(timerInterval);
+            timer.textContent = "Expired";
+        } else {
+            countdownTime--;
+        }
+    }, 1000); 
+}
+
+startCountdown();
+</script>
 </body>
 </html>
 
@@ -44,8 +69,6 @@ $name = $_POST["name"];
 $phoneno = '91'.$_POST["phoneno"];
 $email = $_POST["email"];
 $plainPassword = $_POST["password"];
-
-// Hash the password using bcrypt
 $hashedPassword = password_hash($plainPassword, PASSWORD_BCRYPT);
 
 session_start();
@@ -54,7 +77,6 @@ $_SESSION["phoneno"] = $phoneno;
 $_SESSION["name"] = $name;
 $_SESSION["hashedPassword"] = $hashedPassword;
 
-// Check if the email already exists in the database
 $emailCheckQuery = "SELECT user_email FROM registration WHERE user_email = ?";
 $stmtCheck = $conn->prepare($emailCheckQuery);
 $stmtCheck->bind_param("s", $email);
@@ -62,7 +84,7 @@ $stmtCheck->execute();
 $stmtCheck->store_result();
 
 if ($stmtCheck->num_rows > 0) {
-    // Email already exists in the database
+
     echo "<script>
     alert('Already Email Exist!, Try Login In');
     window.location.href = 'login.php';
@@ -74,7 +96,7 @@ if ($stmtCheck->num_rows > 0) {
 
 $otp = rand(100000, 999999);
 date_default_timezone_set('Asia/Kolkata');
-$expiryTimestamp = time() + 300; // Current timestamp + 300 seconds (5 minutes)
+$expiryTimestamp = time() + 300; 
 $expiryTimeFormatted = date('Y-m-d H:i:s', $expiryTimestamp);
 
 
@@ -92,7 +114,7 @@ else{
 $sql = "INSERT INTO otp (user_id, otpnum, expiry) VALUES ('$email', $otp, '$expiryTimeFormatted')";
 $conn->query($sql);
 }
-//sending otp to email
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -118,5 +140,3 @@ $mail->send();
 
 $conn->close();
 ?>
-
-

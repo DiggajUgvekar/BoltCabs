@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" href="./style/login.css">
-    <title>BoltCabs</title>
+    <title>Change Password
+    </title>
 <body>
 <header>
         <a href="index.php" class = "logo">BoltCabs</a>
@@ -67,10 +68,10 @@
     if (passwordInput.value !== confirmPasswordInput.value) {
         passwordMatchMessage.textContent = "Passwords do not match.";
         passwordMatchMessage.style.color = "red";
-        return false; // Prevent form submission
+        return false; 
     } else {
-        passwordMatchMessage.textContent = ""; // Clear the message
-        return true; // Allow form submission
+        passwordMatchMessage.textContent = ""; 
+        return true; 
     }
 }
 

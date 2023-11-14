@@ -2,18 +2,22 @@
 <html>
     <link rel="stylesheet" href="./style/style.css">
     <title>BoltCabs</title>
+    <script>
+    var taxiCost = <?php echo json_encode($cost); ?>;
+</script>
+
     <style>
                 body {
             font-family: 'Arial', sans-serif;
             text-align: center;
             background-color: #fff;
-            color: #333; /* Dark text color */
+            color: #333; 
             margin: 0;
             padding: 0;
         }
 
         h1 {
-            color: #333; /* Dark text color */
+            color: #333;
         }
 
         .taxi-details-container {
@@ -22,8 +26,8 @@
             margin-top:100px;
             padding: 20px;
             background-color: #fff;
-            border: 1px solid #ddd; /* Light gray border */
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+            border: 1px solid #ddd; 
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); 
             display: flex;
             align-items: center;
         }
@@ -31,14 +35,14 @@
         .taxi-image {
             max-width: 50%;
             display: block;
-            border: 1px solid #ddd; /* Light gray border for the image */
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect for the image */
+            border: 1px solid #ddd; 
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); 
         }
 
         .taxi-details {
             max-width: 50%;
             padding: 0 20px;
-            color: #333; /* Dark text color */
+            color: #333;
         }
 
         .taxi-details p {
@@ -46,13 +50,13 @@
         }
 
         .confirm-button {
-            text-align: center; /* Center the button horizontally */
-            margin-top: 20px; /* Add top margin for spacing */
+            text-align: center; 
+            margin-top: 20px; 
         }
 
         .confirm-button button {
-            background-color: #007bff; /* Blue background color */
-            color: #fff; /* White text color */
+            background-color: #007bff; 
+            color: #fff; 
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -61,7 +65,7 @@
         }
 
         .confirm-button button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #0056b3;
         }
     </style>
 <body>
@@ -88,12 +92,12 @@
 <div class="taxi-details-container">
     <div class="taxi-details">
         <?php
-        include "connection.php"; // Include your database connection script
+        include "connection.php"; 
     if(isset($_SESSION['email'])){
-        if (isset($_GET['taxi_id'])) {
-            $taxi_id = $_GET['taxi_id'];
-            $_SESSION["taxi_id"] = $_GET['taxi_id'];
-            // Query the database to retrieve taxi details based on taxi_id
+        if (isset($_POST['taxi_id'])) {
+            $taxi_id = $_POST['taxi_id'];
+            $cost = $_POST['cost'];
+            $_SESSION["taxi_id"] = $_POST['taxi_id'];
             $sql = "SELECT * FROM taxis WHERE taxi_id = $taxi_id";
             $result = $conn->query($sql);
 
@@ -106,10 +110,10 @@
                 echo '<p><strong>Color:</strong> ' . $row['taxi_color'] . '</p>';
                 echo '<p><strong>Capacity:</strong> ' . $row['taxi_capacity'] . '</p>';
                 echo '<p><strong>Type:</strong> ' . $row['taxi_type'] . '</p>';
-                echo '<p><strong>Status:</strong> ' . $row['taxi_status'] . '</p>';
                 echo '<p><strong>Location:</strong> ' . $row['taxi_location'] . '</p>';
                 echo '<p><strong>Driver Name:</strong> ' . $row['taxi_drivername'] . '</p>';
-               
+                echo '<p><strong>Price:</strong> ₹<span id="taxiCost">' .$cost. '</span></p>';
+                
             } else {
                 echo 'Taxi not found.';
             }
@@ -127,13 +131,13 @@
                     <button onclick="gotofunction()">Confirm Booking</button>
                 </div>
 
-<script>
-
-    function gotofunction(){
-    window.location.href = 'processingdetails.php';
+                <script>
+    function gotofunction() {
+        var costElement = document.getElementById("taxiCost");
+        var cost = costElement.textContent.trim();
+        window.location.href = 'processingdetails.php?cost=' + cost;
     }
 </script>
-
 
 </body>
 </html>

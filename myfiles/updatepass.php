@@ -14,7 +14,6 @@ if ($result) {
     if ($row) {
         $storedtoken = $row['token'];
 
-        // Check if the entered OTP matches the stored OTP
         if ($storedtoken === $token) {
             $updatesql = "UPDATE registration SET user_password = '$hashedPassword' WHERE user_email = '$email'";
             $conn->query($updatesql);

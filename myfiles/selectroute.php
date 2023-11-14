@@ -29,9 +29,9 @@
       }
       .centered-text {
     text-align: center;
-    margin-top: 100px; /* You can adjust the margin-top to center the text vertically */
-    font-size: 18px; /* Adjust the font size as needed */
-    color: #333; /* Text color */
+    margin-top: 100px; 
+    font-size: 18px; 
+    color: #333; 
 }
 
     </style>
@@ -49,9 +49,7 @@
           </ul>
           <ul>
           <?php
-          
-            // session_start();
-          if(isset($_SESSION['email'])){
+                    if(isset($_SESSION['email'])){
             echo '<li><a href="logout.php" class="logout">LOGOUT</a></li>';
           }
           else{
@@ -74,7 +72,8 @@
                       <div class="input-field">
                       <label for="from" class="content-label" ><i class="fa-regular fa-circle-dot"></i></label>
                     <input type="text" name="from"id="from"placeholder="Pick Up Location" class="origin" required>
-                        </div>
+                    <button type="button" id="get-location-button">Get Current Location</button>    
+                    </div>
 
                         <div class="input-field">
                         <label for="from" class="content-label" ><i class="fa-regular fa-circle-dot"></i></label>  
@@ -106,12 +105,73 @@
     </div>';
       }
       else{
-        // echo"<br><br><br><br><br>";
         echo ' <div class="centered-text">
         <strong>User is Not Logged In</strong>
     </div>';
       }
 ?>
+<script>
+  var map;
+
+if ("geolocation" in navigator) {
+    var getLocButton = document.getElementById("get-location-button");
+    var fromInput = document.getElementById("from");
+
+    getLocButton.addEventListener("click", function () {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userLocation = [position.coords.latitude, position.coords.longitude];
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            reverseGeocodeAndPopulateField(latitude, longitude);
+         });
+    });
+} else {
+    console.log("Geolocation is not available in this browser.");
+}
+
+function reverseGeocodeAndPopulateField(latitude, longitude) {
+    var apiKey = 'c8d95b3fea6b42d881f5bf0d633892b3';
+    var url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.results && data.results.length > 0) {
+                var location = data.results[0].formatted;
+                fromInput.value = location;
+            } else {
+                fromInput.value = "Location not found.";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            fromInput.value = "Error retrieving location.";
+        });
+}
+
+</script>
+
+<script>
+ document.addEventListener("DOMContentLoaded", function() {
+  const arrivaltimeInput = document.getElementById("arrivaltime");
+  arrivaltimeInput.addEventListener("input", function() {
+    const selectedTime = new Date(arrivaltimeInput.value);
+    const currentTime = new Date();
+    const minAllowedTime = new Date(currentTime);
+    minAllowedTime.setMinutes(currentTime.getMinutes() + 30);
+
+    if (selectedTime < minAllowedTime) {
+      const minAllowedTimeFormatted = minAllowedTime.toLocaleTimeString();
+      arrivaltimeInput.setCustomValidity("Please select a time after "+minAllowedTimeFormatted);
+
+      console.log("Minimum allowed time:", minAllowedTimeFormatted);
+    } else {
+      arrivaltimeInput.setCustomValidity("");
+    }
+  });
+});
+
+</script>
   </body>
   </html>
 
@@ -126,13 +186,14 @@
     $district = $_POST["district"];
     $arrivaltime = $_POST["arrivaltime"];
     $arrivalTimestamp = date("Y-m-d H:i:s", strtotime($arrivaltime));
-    date_default_timezone_set("Asia/Kolkata");
-    $currentTimestamp = date("Y-m-d H:i:s"); 
-    
+    $timezone = new DateTimeZone("Asia/Kolkata");
+$now = new DateTime("now", $timezone);
+$currentTimestamp = $now->format("Y-m-d H:i:s");
+
     $sql = "INSERT INTO bookings (user_email, pickup_location, district, dropoff_location, booking_status, pickup_datetime, created_at) VALUES ('$email', '$from', '$district', '$to', 'Pending', '$arrivalTimestamp', '$currentTimestamp')";
     $conn->query($sql);
     $booking_id = $conn->insert_id;
     $_SESSION["bookingid"] = $booking_id;
-    header("Location:showroute.php");
+    echo '<script>window.location.href = "showroute.php";</script>';
   }
   ?>

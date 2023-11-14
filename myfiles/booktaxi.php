@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <link rel="stylesheet" href="./style/style.css">
-    <title>BoltCabs</title>
+    <title>BoltCabs booking</title>
     <style>
 body {
     font-family: Arial, sans-serif;
@@ -25,9 +25,9 @@ h1 {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px 0;
-    width: calc(33.33% - 20px); /* 3 cards in a row with some spacing */
-    box-sizing: border-box; /* Include padding in width calculation */
-    text-align: center;
+    width: calc(33.33% - 20px); 
+    box-sizing: border-box; 
+        text-align: center;
 }
 
 .taxi-image {
@@ -85,42 +85,61 @@ h1 {
 
     <div class="taxi-cards-container">
     <?php
-include "connection.php"; // Make sure you have the database connection set up
-
+include "connection.php"; 
 
 
 if (isset($_SESSION['bookingid'])) {
     $bookingid = $_SESSION['bookingid'];
 
-    $sql = "SELECT district FROM bookings WHERE booking_id = '$bookingid'";
+    $sql = "SELECT district,pickup_datetime,expiration_datetime,distance FROM bookings WHERE booking_id = '$bookingid'";
 
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $user_district = $row['district'];
+        $row2 = $result->fetch_assoc();
+        $user_district = $row2['district'];
+        $pickup_datetime = $row2['pickup_datetime'];
+        $expiration_datetime = $row2['expiration_datetime'];
+        $distance = $row2['distance'];
 
-        $sql = "SELECT * FROM taxis WHERE taxi_status = 'Available' AND taxi_location LIKE '%$user_district%'
-        ";
-        $result = $conn->query($sql);
+$sql = "SELECT * FROM taxis WHERE taxi_location LIKE '%$user_district'
+AND NOT EXISTS (
+    SELECT 1
+    FROM bookings AS b
+    WHERE taxis.taxi_id = b.car_id
+    AND b.booking_status = 'Confirmed'
+    AND (
+        '$pickup_datetime' BETWEEN b.pickup_datetime AND DATE_ADD(b.expiration_datetime, INTERVAL 20 MINUTE)
+        OR '$expiration_datetime' BETWEEN b.pickup_datetime AND DATE_ADD(b.expiration_datetime, INTERVAL 20 MINUTE)
+    )
+)";
 
+$result = $conn->query($sql);
 
+if (!$result) {
+    die("Query failed: " . $conn->error); 
+}
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo '<div class="taxi-card">';
                 echo "<img class='taxi-image' src='{$row['taxi_image']}' alt='Taxi Image'>";
 
-
+                
                 echo '<h2>' . $row['taxi_model'] . '</h2>';
                 echo '<p><strong>Location:</strong> ' . $row['taxi_location'] . '</p>';
                 echo '<p><strong>Driver Name:</strong> ' . $row['taxi_drivername'] . '</p>';
-                echo '<a href="carinfo.php?taxi_id=' . $row['taxi_id'] . '" class="book-button">Book Now</a>';
+                $cost = $row['base_price'] + ($distance * 10);
+                echo '<p><strong>Price:</strong> ₹ ' . $cost . '</p>';
+                echo '<form action="carinfo.php" method="post" class="book-form" data-taxi-id="' . $row['taxi_id'] . '">';
+echo '<input type="hidden" name="taxi_id" value="' . $row['taxi_id'] . '">';
+echo '<input type="hidden" name="cost" value="' . $cost . '">';
+echo '<input type="submit" value="Book Now" class="book-button">';
+echo '</form>';
+
                 echo '</div>';
             }
         }
-        
-
- else {
+        else {
             echo 'No available taxis at the moment.';
         }
     }

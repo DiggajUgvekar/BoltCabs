@@ -19,7 +19,7 @@
     border: none;
     border-radius: 5px;
     font-weight: bold;
-    margin: 10px;
+    margin: 20px;
     display: inline-block;
 }
 
@@ -50,7 +50,6 @@
             margin: 5px 0;
         }
 
-/* Additional styling can be added as needed */
 
     </style>
 <body>
@@ -79,12 +78,9 @@
 
     <div class="booking-details-container">
     <?php
-include "connection.php"; // Include your database connection script
-
+include "connection.php"; 
 if (isset($_GET['booking_id'])) {
     $booking_id = $_GET['booking_id'];
-
-    // Query the database to retrieve booking details based on booking_id
     $sql = "SELECT * FROM bookings WHERE booking_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $booking_id);
@@ -94,10 +90,7 @@ if (isset($_GET['booking_id'])) {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
 
-        // Retrieve the car_id associated with the booking
         $car_id = $row['car_id'];
-
-        // Query the "taxis" table to retrieve more details
         $carSQL = "SELECT * FROM taxis WHERE taxi_id = ?";
         $stmt = $conn->prepare($carSQL);
         $stmt->bind_param("i", $car_id);
@@ -105,18 +98,17 @@ if (isset($_GET['booking_id'])) {
         $carResult = $stmt->get_result();
         $carRow = $carResult->fetch_assoc();
 
-        // Display booking details and details from the "taxis" table
         echo '<div class="booking-details">';
         echo '<img src="' . $carRow['taxi_image'] . '" alt="Booking Image" class="booking-image">';
         echo '<div class="details">';
         echo '<p><strong>Booking ID:</strong> ' . $row['booking_id'] . '</p>';
         echo '<p><strong>Pickup Location:</strong> ' . $row['pickup_location'] . '</p>';
         echo '<p><strong>Dropoff Location:</strong> ' . $row['dropoff_location'] . '</p>';
-        echo '<p><strong>Booking Status:</strong> ' . $row['booking_status'] . '</p>';
-        // Display more details from the "taxis" table
+            echo '<p><strong>Arrival Date and Time  :</strong> ' . $row['pickup_datetime'] . '</p>';
         echo '<p><strong>Car Model:</strong> ' . $carRow['taxi_model'] . '</p>';
         echo '<p><strong>Car Registration Number:</strong> ' . $carRow['taxi_regno'] . '</p>';
-        // Add more booking and car details as needed
+        echo '<p><strong>Driver Name:</strong> ' . $carRow['taxi_drivername'] . '</p>';
+        echo '<p><strong>Cost:</strong> ₹' . $row['cost'] . '</p>';
         echo '</div>';
         echo '</div>';
     } else {
